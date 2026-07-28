@@ -24,7 +24,7 @@ public class CustomErrorController implements ErrorController {
     public ModelAndView handleError(HttpServletRequest request, Model model) {
         // String + Model
         // ModelAndView 클래스로 ViewTemplate + Model 두 개를 한번에 넣어 반환할 수 있다.
-        ModelAndView modelAndView = new ModelAndView();
+//        ModelAndView modelAndView = new ModelAndView();
 
         log.error("- 우리가 직접 만든 에러페이지로 이동합니다.");
         // 세상에는 수많은 요청이 있고 그 요청들마다 요청을 보낼 때 표준화된 어떤 필드나 값들이 없어요.
@@ -33,18 +33,15 @@ public class CustomErrorController implements ErrorController {
         Integer statusCode = (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         if (statusCode == HttpStatus.NOT_FOUND.value()) {
 //            return "error/404";
-            modelAndView.addObject("title", "404 Not Found");
-            modelAndView.addObject("description", "Page does not exist");
+            return HttpErrorStatus.NOT_FOUND.toModelAndView();
         } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
 //            return "error/500";
-            modelAndView.addObject("title", "500 Internal Server Error");
-            modelAndView.addObject("description", "Any exception is occurred in application");
+            return HttpErrorStatus.INTERNAL_SERVER_ERROR.toModelAndView();
         } else {
-            modelAndView.addObject("title", "Something went wrong!");
-            modelAndView.addObject("description", "Our Engineers are on it");
+            return HttpErrorStatus.INTERNAL_SERVER_ERROR.toModelAndView();
         }
 
-        modelAndView.setViewName("error/index");
-        return modelAndView;
+//        modelAndView.setViewName("error/index");
+//        return modelAndView;
     }
 }
