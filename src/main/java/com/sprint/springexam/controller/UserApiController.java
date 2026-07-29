@@ -22,20 +22,21 @@ import java.util.List;
  *          - 위험 - 객체 고정 : final 필드 정의가 불가능하다는 점에서 이미 현업에서 사용할 이유가 없음
  *      3. 필드 주입
  *          - 위험 - 객체 고정 : final 필드 정의가 불가능하다는 점에서 이미 현업에서 사용할 이유가 없음
+ *
+ *      Bean 주입받는 필드 타입 기준 3가지
+ *      구체 클래스를 정의하는 방법 3가지와 동일하다
+ *      1. 구체 클래스 <- 온전히 그 자체만으로 존재하는 독립적 구체 클래스
+ *      2. 구체 클래스 <- 인터페이스의 구현
+ *      3. 구체 클래스 <- 부모 클래스의 상속
  */
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/api/users")
 public class UserApiController {
-//    3. 필드 주입
-    @Autowired
-    private /*final*/ UserService userService;
-
-//    @Autowired
-//    public void setUserService(UserService userService) {
-//        this.userService = userService;
-//    }
+    // 1. 구체 클래스 객체 주입
+    private final UserService userService;
 
     // @ResponseBody : Json 형식의 데이터 반환
     @ResponseBody

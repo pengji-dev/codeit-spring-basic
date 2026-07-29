@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Service    // 직접 우리가 @Configuration + @Bean 통해 Bean 객체를 생성해 줄 것이기에 주석처리
+@Service    // 구체 클래스 <- 온전히 그 자체만으로 독립적 구테 클래스
 public class UserService {
     private static final List<User> USERS = new ArrayList<>(){
         {
