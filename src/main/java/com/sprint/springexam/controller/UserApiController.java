@@ -4,6 +4,7 @@ import com.sprint.springexam.entity.User;
 import com.sprint.springexam.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,16 +25,16 @@ import java.util.List;
  */
 
 @Slf4j
-// 1. 생성자 주입
-@RequiredArgsConstructor
+@Controller
 @RequestMapping(value = "/api/users")
 public class UserApiController {
-    private final UserService userService;
+//    2. 수정자 주입
+    private /*final*/ UserService userService;
 
-//    @RequiredArgsConstructor 로 대신함
-//    public UserApiController(UserService userService) {
-//        this.userService = userService;
-//    }
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     // @ResponseBody : Json 형식의 데이터 반환
     @ResponseBody
