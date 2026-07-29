@@ -1,10 +1,12 @@
 package com.sprint.springexam.service;
 
 import com.sprint.springexam.entity.User;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+//@Service    // 직접 우리가 @Configuration + @Bean 통해 Bean 객체를 생성해 줄 것이기에 주석처리
 public class UserService {
     private static final List<User> USERS = new ArrayList<>(){
         {
