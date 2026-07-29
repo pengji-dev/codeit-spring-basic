@@ -1,6 +1,7 @@
 package com.sprint.springexam.controller;
 
 import com.sprint.springexam.entity.User;
+import com.sprint.springexam.service.IUserService;
 import com.sprint.springexam.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,8 +36,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/users")
 public class UserApiController {
-    // 1. 구체 클래스 객체 주입
-    private final UserService userService;
+    // 2. 인터페이스 다형성 객체 주입
+    private final IUserService userService;
 
     // @ResponseBody : Json 형식의 데이터 반환
     @ResponseBody

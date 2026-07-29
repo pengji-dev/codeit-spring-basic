@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service    // 구체 클래스 <- 온전히 그 자체만으로 독립적 구테 클래스
-public class UserService {
+@Service    // 구체 클래스 <- 인터페이스의 구현
+public class UserService implements IUserService {
     private static final List<User> USERS = new ArrayList<>(){
         {
             add(new User(1, "Aaron", 10, "Developer", "Backend"));
