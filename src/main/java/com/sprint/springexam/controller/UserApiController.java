@@ -28,13 +28,14 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/api/users")
 public class UserApiController {
-//    2. 수정자 주입
+//    3. 필드 주입
+    @Autowired
     private /*final*/ UserService userService;
 
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
+//    @Autowired
+//    public void setUserService(UserService userService) {
+//        this.userService = userService;
+//    }
 
     // @ResponseBody : Json 형식의 데이터 반환
     @ResponseBody
