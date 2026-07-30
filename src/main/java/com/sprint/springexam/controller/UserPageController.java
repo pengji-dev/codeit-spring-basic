@@ -15,15 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 /*
- *      단일 인터페이스 기반의 다수 구현 클래스 Bean 객체들을 한번에 관리하기
- *      - 이 모두를 JCF Collection 통해 한번에 받아다가 쓸 수 있도록 Spring Container가 배려해준다.
- *      1. List<IUserService> 자료구조
- *          - 구현 클래스 3개가 자동으로 Spring Container 통해 주입된다. - 실제로 로그를 찍어보면 확인 가능
- *      2. Map<String, IUserService> 자료구조
- *          - List 자료구조와 동일하지만 앞의 String 타입의 Key 값에는 Bean 명칭이 들어간다.
- *              - alphaTeamUserService 명칭 -> AlphaTeamUserService 객체
- *              - betaTeammUserService 명칭 -> BetaTeamUserService 객체
- *              - gammaTeamUserService 명칭 -> GammaTeamUserService 객체
+ *      페이지 응답 : 동적 페이지 생성을 위해 Model + ViewTemplate 두 개를 반환하는 방법
+ *      1. 구현 클래스 ModelAndView - 고대(Spring 초기)
+ *          - ViewTemplate + Model 합쳐서 반환
  */
 
 @Slf4j
@@ -34,50 +28,29 @@ public class UserPageController {
     private final Map<String, IUserService> userServices;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String users(Model model) {
+    public ModelAndView users(ModelAndView modelAndView) {
         log.info("단일 IUserService 인터페이스의 구현체들은 Spring Container 농부가 한번에 모아 JCF 내 주입 : {}", userServices);
 
-        IUserService userService = this.userServices.get("alphaTeamUserService");
-        List<User> users = userService.findAll();
-        model.addAttribute("users", users);
+        List<User> users = userServices.get("alphaTeamUserService").findAll();
+        modelAndView.addObject("users", users);
+        modelAndView.setViewName("users/list");
 
-        return "users/list";
-
-//        ModelAndView modelAndView = new ModelAndView();
-//
-//        List<User> users = userService.findAll();
-//        modelAndView.addObject("users", users);
-//        modelAndView.setViewName("users/list");
-//
-//        return modelAndView;
+        return modelAndView;
     }
 
     // 한 명의 유저를 볼 수 있는 페이지 반환
     @RequestMapping(value = "/1", method = RequestMethod.GET)
-    public String user(Model model) {
+    public ModelAndView user(ModelAndView modelAndView) {
         log.info("단일 IUserService 인터페이스의 구현체들은 Spring Container 농부가 한번에 모아 JCF 내 주입 : {}", userServices);
 
-        IUserService userService = userServices.get("alphaTeamUserService");
-        User user = userService.findById(1);
-        model.addAttribute("id", user.getId());
-        model.addAttribute("name", user.getName());
-        model.addAttribute("age", user.getAge());
-        model.addAttribute("job", user.getJob());
-        model.addAttribute("specialty", user.getSpecialty());
+        User user = userServices.get("alphaTeamUserService").findById(1);
+        modelAndView.addObject("id", user.getId());
+        modelAndView.addObject("name", user.getName());
+        modelAndView.addObject("age", user.getAge());
+        modelAndView.addObject("job", user.getJob());
+        modelAndView.addObject("specialty", user.getSpecialty());
+        modelAndView.setViewName("users/detail");
 
-        return "users/detail";
-
-//        ModelAndView modelAndView = new ModelAndView();
-//
-//        User user = userService.findById(1);
-//        modelAndView.addObject("id", user.getId());
-//        modelAndView.addObject("name", user.getName());
-//        modelAndView.addObject("age", user.getAge());
-//        modelAndView.addObject("job", user.getJob());
-//        modelAndView.addObject("specialty", user.getSpecialty());
-//        modelAndView.setViewName("users/detail");
-//
-//        return modelAndView;
-
+        return modelAndView;
     }
 }
