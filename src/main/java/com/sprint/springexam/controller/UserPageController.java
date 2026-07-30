@@ -1,10 +1,10 @@
 package com.sprint.springexam.controller;
 
 import com.sprint.springexam.entity.User;
-import com.sprint.springexam.service.UserService;
+import com.sprint.springexam.service.IUserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,9 +13,10 @@ import java.util.List;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/users")
 public class UserPageController {
-    private final UserService userService = new UserService();
+    private final IUserService userService;
 
     // 전체 유저를 볼 수 있는 페이지 반환
 //    @RequestMapping(value = "/users", method = RequestMethod.GET)

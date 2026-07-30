@@ -6,8 +6,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service    // 구체 클래스 <- 부모 클래스의 상속
-public class UserService extends AbstractUserService {
+@Service
+// IUserService 인터페이스 구현체 중 1번째 : AlphaTeamUserService
+public class AlphaTeamUserService implements IUserService {
     private static final List<User> USERS = new ArrayList<>(){
         {
             add(new User(1, "Aaron", 10, "Developer", "Backend"));

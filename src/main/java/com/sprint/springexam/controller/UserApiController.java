@@ -1,12 +1,9 @@
 package com.sprint.springexam.controller;
 
 import com.sprint.springexam.entity.User;
-import com.sprint.springexam.service.AbstractUserService;
 import com.sprint.springexam.service.IUserService;
-import com.sprint.springexam.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,6 +27,14 @@ import java.util.List;
  *      1. 구체 클래스 <- 온전히 그 자체만으로 존재하는 독립적 구체 클래스
  *      2. 구체 클래스 <- 인터페이스의 구현
  *      3. 구체 클래스 <- 부모 클래스의 상속
+ *
+ *      Bean 정의 - 사용 시 주의
+ *      Bean 주입받을 때 그리고 Bean 정의할 때 명칭에 주의하자!
+ *      - Bean 주입받을 때 클래스명 기준 : IUserService alphaTeamUserService 필드 <- class AlphaTeamUserService
+ *      - Bean 주입받을 때 개별명칭 기준 : IUserService userService 필드 <- @Qualifier("userService") class AlphaTeamUserService
+ *
+ *      단일 인터페이스에 대한 다수 구체 클래스가 있을 시 Bean 객체 주입 시 충돌
+ *      단일 인터페이스에 대한 다수 구체 클래스가 있을 때 어떤 Bean 객체를 주입해야 할지 Spring Container는 알 수 없어서 우리가 명시해줘야 한다.
  */
 
 @Slf4j
@@ -37,8 +42,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/users")
 public class UserApiController {
-    // 3. 부모 클래스 다형성 객체 주입
-    private final AbstractUserService userService;
+    private IUserService userService;
 
     // @ResponseBody : Json 형식의 데이터 반환
     @ResponseBody
