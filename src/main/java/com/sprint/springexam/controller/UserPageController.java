@@ -21,6 +21,8 @@ import java.util.Map;
  *          - ViewTemplate + Model 합쳐서 반환
  *      2. 구현 클래스 ModelMap - 예전(Spring 중기)
  *          - ViewTemplate / Model 역할 분리
+ *      3. 인터페이스 Model - 최신
+ *          - Model 인터페이스를 통해 다양한 성능과 목적의 구체 클래스를 사용할 수 있도록 객체지향적 처리
  */
 
 @Slf4j
@@ -31,26 +33,26 @@ public class UserPageController {
     private final Map<String, IUserService> userServices;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String users(ModelMap modelMap) {
+    public String users(Model model) {
         log.info("단일 IUserService 인터페이스의 구현체들은 Spring Container 농부가 한번에 모아 JCF 내 주입 : {}", userServices);
 
         List<User> users = userServices.get("alphaTeamUserService").findAll();
-        modelMap.addAttribute("users", users);
+        model.addAttribute("users", users);
 
         return "users/list";
     }
 
     // 한 명의 유저를 볼 수 있는 페이지 반환
     @RequestMapping(value = "/1", method = RequestMethod.GET)
-    public String user(ModelMap modelMap) {
+    public String user(Model model) {
         log.info("단일 IUserService 인터페이스의 구현체들은 Spring Container 농부가 한번에 모아 JCF 내 주입 : {}", userServices);
 
         User user = userServices.get("alphaTeamUserService").findById(1);
-        modelMap.addAttribute("id", user.getId());
-        modelMap.addAttribute("name", user.getName());
-        modelMap.addAttribute("age", user.getAge());
-        modelMap.addAttribute("job", user.getJob());
-        modelMap.addAttribute("specialty", user.getSpecialty());
+        model.addAttribute("id", user.getId());
+        model.addAttribute("name", user.getName());
+        model.addAttribute("age", user.getAge());
+        model.addAttribute("job", user.getJob());
+        model.addAttribute("specialty", user.getSpecialty());
 
         return "users/detail";
     }
