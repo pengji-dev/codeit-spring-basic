@@ -41,18 +41,27 @@ import java.util.List;
  *      - @Qualifier = 수많은 충돌나는 구체 클래스들 중 Bean 명칭을 일치시켜 지정
  *          - Spring 3 버전부터 생성자 파라미터 이름 기반의 Bean 매핑 기능이 더 이상 동작되지 않는다고 한다. - Deprecated
  *              - 그래서 Lombok 생성자가 아닌 직접 생성자를 명시해줘야 한다.
+ *      - @Primary = 수많은 충돌나는 구체 클래스들 중 이것을 Bean 객체로 사용해주세요~ 라고 직접 지정
+ *
+ *      * 궁금증
+ *      1. @Qualifier와 @Primary 중 각기 다른 IUserService 인터페이스의 구체 클래스에 각각 적용 시 우선순위는 무엇일까?
+ *          - 우선순위는 @Qualifier가 높다! 그 이유는 개발자가 직접 Bean 주입을 위해 Bean 명칭을 지정하여 특정 구체 클래스에 지정하기 때문이다.
+ *      2. @Qualifier와 @Primary를 동시에 사용하는 경우가 현업에서 있을까?
+ *          - 많지는 않지만 있다! DB에 접근하기 위해서는 Repository를 거치는데 테스트를 위해서 DB까지 접근하기는 오래 걸리기에 테스트용을
+ *            Map을 선언하여 해당 Map에 우선권을 주기 위해 @Qualifier를 선언하고, Repository에는 @Primaey를 준다.
  */
 
 @Slf4j
 @Controller
-//@RequiredArgsConstructor      // Spring 3 부터는 동작되지 않기에 아래서 직접 생성자 정의 필요
+@RequiredArgsConstructor
 @RequestMapping(value = "/api/users")
 public class UserApiController {
     private final IUserService userService;
 
-    public UserApiController(@Qualifier("userService") IUserService userService) {
-        this.userService = userService;
-    }
+//    @Primary 적용을 위해 @RequiredArgsConstractor 적용
+//    public UserApiController(@Qualifier("userService") IUserService userService) {
+//        this.userService = userService;
+//    }
 
     // @ResponseBody : Json 형식의 데이터 반환
     @ResponseBody

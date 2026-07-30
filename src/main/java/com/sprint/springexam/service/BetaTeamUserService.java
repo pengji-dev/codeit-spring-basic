@@ -1,6 +1,8 @@
 package com.sprint.springexam.service;
 
 import com.sprint.springexam.entity.User;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -8,12 +10,14 @@ import java.util.List;
 
 @Service
 // IUserService 인터페이스 구현체 중 2번째 : BetaTeamUserService
+//@Qualifier("userService")
+//@Primary
 public class BetaTeamUserService implements IUserService {
     private static final List<User> USERS = new ArrayList<>(){
         {
-            add(new User(1, "Aaron", 10, "Developer", "Backend"));
-            add(new User(2, "Baron", 20, "Developer", "Frontend"));
-            add(new User(3, "Caron", 30, "Designer", "Design System"));
+            add(new User(4, "Daron", 10, "Developer", "Backend"));
+            add(new User(5, "Earon", 20, "Developer", "Frontend"));
+            add(new User(6, "Faron", 30, "Designer", "Design System"));
         }
     };
 
