@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 /*
  *      Bean "사용"방법 3가지 - 이 중 현업에서는 생성자 방식만 씀
@@ -56,7 +57,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/users")
 public class UserApiController {
-    private final List<IUserService> userServices;
+    private final Map<String, IUserService> userServices;
 
     // @ResponseBody : Json 형식의 데이터 반환
     @ResponseBody
@@ -64,7 +65,7 @@ public class UserApiController {
     public List<User> users() {
         log.info("단일 IUserService 인터페이스의 구현체들은 Spring Container 농부가 한번에 모아 JCF 내 주입 : {}", userServices);
 
-        List<User> users = userServices.get(0).findAll();
+        List<User> users = userServices.get("alphaTeamUserService").findAll();
 
         return users;
 
@@ -78,7 +79,7 @@ public class UserApiController {
     public User user() {
         log.info("단일 IUserService 인터페이스의 구현체들은 Spring Container 농부가 한번에 모아 JCF 내 주입 : {}", userServices);
 
-        User user = userServices.get(0).findById(1);
+        User user = userServices.get("alphaTeamUserService").findById(1);
 
         return user;
 

@@ -12,12 +12,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
 /*
  *      단일 인터페이스 기반의 다수 구현 클래스 Bean 객체들을 한번에 관리하기
  *      - 이 모두를 JCF Collection 통해 한번에 받아다가 쓸 수 있도록 Spring Container가 배려해준다.
  *      1. List<IUserService> 자료구조
  *          - 구현 클래스 3개가 자동으로 Spring Container 통해 주입된다. - 실제로 로그를 찍어보면 확인 가능
+ *      2. Map<String, IUserService> 자료구조
+ *          - List 자료구조와 동일하지만 앞의 String 타입의 Key 값에는 Bean 명칭이 들어간다.
+ *              - alphaTeamUserService 명칭 -> AlphaTeamUserService 객체
+ *              - betaTeammUserService 명칭 -> BetaTeamUserService 객체
+ *              - gammaTeamUserService 명칭 -> GammaTeamUserService 객체
  */
 
 @Slf4j
@@ -25,13 +31,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(value = "/users")
 public class UserPageController {
-    private final List<IUserService> userServices;
+    private final Map<String, IUserService> userServices;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String users(Model model) {
         log.info("단일 IUserService 인터페이스의 구현체들은 Spring Container 농부가 한번에 모아 JCF 내 주입 : {}", userServices);
 
-        IUserService userService = this.userServices.get(0);
+        IUserService userService = this.userServices.get("alphaTeamUserService");
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
 
@@ -51,7 +57,7 @@ public class UserPageController {
     public String user(Model model) {
         log.info("단일 IUserService 인터페이스의 구현체들은 Spring Container 농부가 한번에 모아 JCF 내 주입 : {}", userServices);
 
-        IUserService userService = userServices.get(0);
+        IUserService userService = userServices.get("alphaTeamUserService");
         User user = userService.findById(1);
         model.addAttribute("id", user.getId());
         model.addAttribute("name", user.getName());
