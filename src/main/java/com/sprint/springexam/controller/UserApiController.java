@@ -4,6 +4,7 @@ import com.sprint.springexam.entity.User;
 import com.sprint.springexam.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,14 +36,23 @@ import java.util.List;
  *
  *      단일 인터페이스에 대한 다수 구체 클래스가 있을 시 Bean 객체 주입 시 충돌
  *      단일 인터페이스에 대한 다수 구체 클래스가 있을 때 어떤 Bean 객체를 주입해야 할지 Spring Container는 알 수 없어서 우리가 명시해줘야 한다.
+ *
+ *      충돌 해결을 위한 방법 2가지
+ *      - @Qualifier = 수많은 충돌나는 구체 클래스들 중 Bean 명칭을 일치시켜 지정
+ *          - Spring 3 버전부터 생성자 파라미터 이름 기반의 Bean 매핑 기능이 더 이상 동작되지 않는다고 한다. - Deprecated
+ *              - 그래서 Lombok 생성자가 아닌 직접 생성자를 명시해줘야 한다.
  */
 
 @Slf4j
 @Controller
-@RequiredArgsConstructor
+//@RequiredArgsConstructor      // Spring 3 부터는 동작되지 않기에 아래서 직접 생성자 정의 필요
 @RequestMapping(value = "/api/users")
 public class UserApiController {
-    private IUserService userService;
+    private final IUserService userService;
+
+    public UserApiController(@Qualifier("userService") IUserService userService) {
+        this.userService = userService;
+    }
 
     // @ResponseBody : Json 형식의 데이터 반환
     @ResponseBody

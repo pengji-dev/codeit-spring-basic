@@ -1,12 +1,15 @@
 package com.sprint.springexam.service;
 
 import com.sprint.springexam.entity.User;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Qualifier("userService")       // IUserService 인터페이스의 여러 구체 클래스 중 해당 구체 클래스를 사용하도록 @Qulifier("userService")를 사용해서 지목한다.
 // IUserService 인터페이스 구현체 중 1번째 : AlphaTeamUserService
 public class AlphaTeamUserService implements IUserService {
     private static final List<User> USERS = new ArrayList<>(){
