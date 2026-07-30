@@ -10,8 +10,6 @@ import java.util.List;
 
 @Service
 // IUserService 인터페이스 구현체 중 2번째 : BetaTeamUserService
-//@Qualifier("userService")
-//@Primary
 public class BetaTeamUserService implements IUserService {
     private static final List<User> USERS = new ArrayList<>(){
         {

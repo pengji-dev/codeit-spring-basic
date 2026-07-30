@@ -56,27 +56,34 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/users")
 public class UserApiController {
-    private final IUserService userService;
-
-//    @Primary 적용을 위해 @RequiredArgsConstractor 적용
-//    public UserApiController(@Qualifier("userService") IUserService userService) {
-//        this.userService = userService;
-//    }
+    private final List<IUserService> userServices;
 
     // @ResponseBody : Json 형식의 데이터 반환
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<User> users() {
-        List<User> users = userService.findAll();
+        log.info("단일 IUserService 인터페이스의 구현체들은 Spring Container 농부가 한번에 모아 JCF 내 주입 : {}", userServices);
+
+        List<User> users = userServices.get(0).findAll();
 
         return users;
+
+//        List<User> users = userService.findAll();
+//
+//        return users;
     }
 
     @ResponseBody
     @RequestMapping(value = "/1", method = RequestMethod.GET)
     public User user() {
-        User user = userService.findById(1);
+        log.info("단일 IUserService 인터페이스의 구현체들은 Spring Container 농부가 한번에 모아 JCF 내 주입 : {}", userServices);
+
+        User user = userServices.get(0).findById(1);
 
         return user;
+
+//        User user = userService.findById(1);
+//
+//        return user;
     }
 }
